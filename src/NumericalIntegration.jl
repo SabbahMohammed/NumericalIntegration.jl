@@ -3,7 +3,7 @@ module NumericalIntegration
 using LinearAlgebra
 using Logging
 
-export integrate, cumul_integrate
+export integrate, cumul_integrate, cumtrapz
 export Trapezoidal, TrapezoidalEven, TrapezoidalFast, TrapezoidalEvenFast
 export SimpsonEven, SimpsonEvenFast
 export RombergEven
@@ -215,6 +215,14 @@ function cumul_integrate(x::AbstractVector, y::AbstractVector, ::Trapezoidal)
         retarr[i] = retarr[i-1] + (x[i] - x[i-1]) * (y[i] + y[i-1])
     end
     return HALF * retarr
+end
+
+function cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector)
+    @assert length(x) == length(y) "x and y vectors must be of the same length!"
+    for i in 2 : length(y)
+        retarr[i] = retarr[i-1] + (x[i] - x[i-1]) * (y[i] + y[i-1])
+    end
+    HALF * retarr
 end
 
 """
