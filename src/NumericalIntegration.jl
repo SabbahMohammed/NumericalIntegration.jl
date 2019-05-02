@@ -217,7 +217,12 @@ function cumul_integrate(x::AbstractVector, y::AbstractVector, ::Trapezoidal)
     return HALF * retarr
 end
 
-function cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector)
+"""
+    cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector, ::Trapezoidal)
+
+same as cumul_integrate but avoid unnecessary allocation by passing the retarr vector
+"""
+function cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector, ::Trapezoidal)
     @assert length(x) == length(y) "x and y vectors must be of the same length!"
     for i in 2 : length(y)
         retarr[i] = retarr[i-1] + (x[i] - x[i-1]) * (y[i] + y[i-1])
@@ -282,6 +287,7 @@ integrate(x::AbstractVector, y::AbstractMatrix; dims=2) = integrate(x, y, Trapez
 integrate(X::NTuple, Y::AbstractArray) = integrate(X, Y, Trapezoidal())
 
 cumul_integrate(x::AbstractVector, y::AbstractVector) = cumul_integrate(x, y, Trapezoidal())
+cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector) = cumtrapz(x, y, retarr, Trapezoidal())
 
 cumul_integrate(x::AbstractVector, y::AbstractMatrix; dims=2) = cumul_integrate(x, y, Trapezoidal(); dims=dims)
 
