@@ -225,9 +225,8 @@ same as cumul_integrate but avoid unnecessary allocation by passing the retarr v
 function cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector, ::Trapezoidal)
     @assert length(x) == length(y) "x and y vectors must be of the same length!"
     for i in 2 : length(y)
-        retarr[i] = retarr[i-1] + (x[i] - x[i-1]) * (y[i] + y[i-1])
+        retarr[i] = (retarr[i-1] + (x[i] - x[i-1]) * (y[i] + y[i-1]))//2
     end
-    retarr *= HALF
 end
 
 """
