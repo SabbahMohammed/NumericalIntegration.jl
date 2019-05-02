@@ -222,7 +222,7 @@ function cumtrapz(x::AbstractVector, y::AbstractVector, retarr::AbstractVector)
     for i in 2 : length(y)
         retarr[i] = retarr[i-1] + (x[i] - x[i-1]) * (y[i] + y[i-1])
     end
-    retarr /= HALF
+    retarr *= HALF
 end
 
 """
